@@ -1,14 +1,3 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
-#
-
 require 'spec_helper'
 
 describe User do
@@ -108,5 +97,48 @@ describe User do
    it "should set the encrypted password" do
      @user.encrypted_password.should_not be_blank
    end
+
+   describe "has_password? method" do
+
+     it "should be true if the passwords match" do
+       @user.has_password?(@attr[:password]).should be_true
+     end
+
+     it "should be false if the passwords do not match" do
+       @user.has_password?("wrong_password").should be_false
+       # Annoyingly passes as nil if has_password? method undefined
+       @user.has_password?("wrong_password").should_not be_nil
+     end
+   end
+  
+    describe "authenticate method" do
+
+     it "should return nil when the password is incorrect" do
+       User.authenticate(@attr[:email], "invalid").should be_nil
+     end
+
+     it "should return nil when email matches no existing users" do
+       User.authenticate("no_user@example.com", @attr[:password]).should be_nil
+     end
+
+     it "should return user object when email/password match" do
+       User.authenticate(@attr[:email], @attr[:password]).should == @user
+     end
+    end
   end
 end
+
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
+#  salt               :string(255)
+#
+

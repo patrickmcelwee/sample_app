@@ -38,4 +38,5 @@ gem 'sqlite3', '1.3.3'
    gem 'autotest', '4.4.6'
    gem 'autotest-rails-pure', '4.1.2'
    gem 'ZenTest', '4.6.2'
+   gem 'factory_girl_rails', '1.0'
  end
